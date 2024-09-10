@@ -1,18 +1,18 @@
 # Panoptic audit details
-- Total Prize Pool: $25000 in USDC
-  - HM awards: $21,500 in USDC
-  - Judge awards: $1,800 in USDC
-  - Validator awards: $1,200 in USDC 
-  - Scout awards: $500 in USDC
+- Total Prize Pool: $XX,XXX in USDC
+  - HM awards: $XX,XXX in USDC
+  - Judge awards: $X,XXX in USDC
+  - Validator awards: $X,XXX in USDC 
+  - Scout awards: $XXX in USDC
 - Join [C4 Discord](https://discord.gg/code4rena) to register
 - Submit findings [using the C4 form](https://code4rena.com/contests/2024-06-panoptic/submit)
 - [Read our guidelines for more details](https://docs.code4rena.com/roles/wardens)
-- Starts June 4, 2024 20:00 UTC
-- Ends June 10, 2024 20:00 UTC
+- Starts Sept XX, 2024 20:00 UTC
+- Ends Sept XX, 2024 20:00 UTC
 
 ## Automated Findings / Publicly Known Issues
 
-The 4naly3er report can be found @TODO: ~~[here](https://github.com/code-423n4/2024-04-panoptic/blob/main/4naly3er-report.md).~~
+The 4naly3er report can be found @TODO: ~~[here](https://github.com/code-423n4/2024-09-panoptic/blob/main/4naly3er-report.md).~~
 
 
 
@@ -24,7 +24,7 @@ _Note for C4 wardens: Anything included in this `Automated Findings / Publicly K
 Some tokens may not be transferable at all.
 - Construction helper functions (prefixed with add) in the TokenId library and other types do not perform extensive input validation. Passing invalid or nonsensical inputs into these functions or attempting to overwrite already filled slots may yield unexpected or invalid results. This is by design, so it is expected that users
 of these functions will validate the inputs beforehand. 
-- Very large quantities of tokens are not supported. It should be assumed that for any given pool, the cumulative amount of tokens that enter the system (associated with that pool, through adding liquidity, collection, etc.) will not exceed 2^127 - 1. Note that this is only a per-pool assumption, so if it is broken on one pool it should not affect the operation of any other pools, only the pool in question.
+- Tokens with a supply exceeding 2^127 - 1 are not supported.
 - If one token on a pool is broken/does not meet listed criteria/is malicious there are no guarantees as to the security of the other token in that pool, as long as other pools with two legitimate and compliant tokens are not affected.
 - Price/oracle manipulation that is not atomic or requires attackers to hold a price across more than one block (i.e., to manipulate a Uniswap observation, you need to set the manipulated price at the end of one block, and then keep it there until the next block) is not in scope
 - Attacks that stem from the TWAP being extremely stale compared to the market price within its period (currently 10 minutes) 
@@ -41,6 +41,7 @@ of these functions will validate the inputs beforehand.
 - In some situations (stale TWAP tick), force exercised users will be worse off than if they had burnt their position.
  - For the purposes of this competition, assume the constructor arguments to the CollateralTracker are: `10, 2_000, 1_000, -128, 5_000, 9_000, 20_000`
 - Depending on the token, the amount of funds required for the initial factory deployment may be high or unrealistic
+- It is feasible for the share supply of the CollateralTracker to approach 2**256 - 1 (given the token supply constraints, this can happen through repeated protocol-loss-causing liquidations), which can cause various reverts and overflows. Generally, issues with an extremely high share supply as a precondition (delegation reverts due to user's balance being too high, other DoS caused by overflows in calculations with share supply or balances, etc.) are not valid unless that share supply can be created through means other than repeated liquidations/high protocol loss.  
 
 
 
@@ -107,37 +108,6 @@ Once they have deposited, there are many options for the other actors in the pro
 
 Meanwhile, force exercisers and liquidators can perform their respective roles with the `forceExercise` and `liquidateAccount` functions.
 
-## Repository Structure
-
-```ml
-contracts/
-├── CollateralTracker — "ERC4626 vault where token liquidity from Panoptic Liquidity Providers (PLPs) and collateral for option positions are deposited and collateral requirements are computed"
-├── PanopticFactory — "Handles deployment of new Panoptic instances on top of Uniswap pools, initial liquidity deployments, and NFT rewards for deployers"
-├── PanopticPool — "Coordinates all options trading activity - minting, burning, force exercises, liquidations"
-├── SemiFungiblePositionManager — "The 'engine' of Panoptic - manages all Uniswap V3 positions in the protocol as well as being a more advanced, gas-efficient alternative to NFPM for Uniswap LPs"
-├── tokens
-│   ├── ERC1155Minimal — "A minimalist implementation of the ERC1155 token standard without metadata"
-│   ├── ERC20Minimal — "A minimalist implementation of the ERC20 token standard without metadata"
-│   └── interfaces
-        ├── IDonorNFT — "An interface the PanopticFactory can use to issue reward NFTs"
-│       └── IERC20Partial — "An incomplete ERC20 interface containing functions used in Panoptic with some return values omitted to support noncompliant tokens such as USDT"
-├── types
-│   ├── LeftRight — "Implementation for a set of custom data types that can hold two 128-bit numbers"
-│   ├── LiquidityChunk — "Implementation for a custom data type that can represent a liquidity chunk of a given size in Uniswap - containing a tickLower, tickUpper, and liquidity"
-│   └── TokenId — "Implementation for the custom data type used in the SFPM and Panoptic to encode position data in 256-bit ERC1155 tokenIds - holds a pool identifier and up to four full position legs"
-├── libraries
-│   ├── CallbackLib — "Library for verifying and decoding Uniswap callbacks"
-│   ├── Constants — "Library of Constants used in Panoptic"
-│   ├── Errors — "Contains all custom errors used in Panoptic's core contracts"
-│   ├── FeesCalc — "Utility to calculate up-to-date swap fees for liquidity chunks"
-│   ├── InteractionHelper — "Helpers to perform bytecode-size-heavy interactions with external contracts like batch approvals and metadata queries"
-│   ├── Math — "Library of generic math functions like abs(), mulDiv, etc"
-│   ├── PanopticMath — "Library containing advanced Panoptic/Uniswap-specific functionality such as our TWAP, price conversions, and position sizing math"
-│   └── SafeTransferLib — "Safe ERC20 transfer library that gracefully handles missing return values"
-└── multicall
-    └── Multicall — "Adds a function to inheriting contracts that allows for multiple calls to be executed in a single transaction"
-```
-
 ## Links
 
 - **Previous audits:**  None public
@@ -165,67 +135,17 @@ Panoptic has been presented at conferences and was conceived with the first Pano
 
 ### Files in scope
 
-|                      File                      | Logic Contracts | Interfaces | SLOC |
-|:----------------------------------------------:|:---------------:|:----------:|:----:|
-| [contracts/CollateralTracker.sol](https://github.com/code-423n4/2024-04-panoptic/tree/main/contracts/CollateralTracker.sol)               | 1               | ****       | 792  |
-| [contracts/PanopticFactory.sol](https://github.com/code-423n4/2024-04-panoptic/tree/main/contracts/PanopticFactory.sol)                 | 1               | ****       | 249  |
-| [contracts/PanopticPool.sol](https://github.com/code-423n4/2024-04-panoptic/tree/main/contracts/PanopticPool.sol)                    | 1               | ****       | 1162 |
-| [contracts/SemiFungiblePositionManager.sol](https://github.com/code-423n4/2024-04-panoptic/tree/main/contracts/SemiFungiblePositionManager.sol)     | 1               | ****       | 724  |
-| [contracts/libraries/CallbackLib.sol](https://github.com/code-423n4/2024-04-panoptic/tree/main/contracts/libraries/CallbackLib.sol)           | 1               | ****       | 22   |
-| [contracts/libraries/Constants.sol](https://github.com/code-423n4/2024-04-panoptic/tree/main/contracts/libraries/Constants.sol)             | 1               | ****       | 9    |
-| [contracts/libraries/Errors.sol](https://github.com/code-423n4/2024-04-panoptic/tree/main/contracts/libraries/Errors.sol)                | 1               | ****       | 35   |
-| [contracts/libraries/FeesCalc.sol](https://github.com/code-423n4/2024-04-panoptic/tree/main/contracts/libraries/FeesCalc.sol)              | 1               | ****       | 86   |
-| [contracts/libraries/InteractionHelper.sol](https://github.com/code-423n4/2024-04-panoptic/tree/main/contracts/libraries/InteractionHelper.sol)     | 1               | ****       | 72   |
-| [contracts/libraries/Math.sol](https://github.com/code-423n4/2024-04-panoptic/tree/main/contracts/libraries/Math.sol)                  | 1               | ****       | 417  |
-| [contracts/libraries/PanopticMath.sol](https://github.com/code-423n4/2024-04-panoptic/tree/main/contracts/libraries/PanopticMath.sol)          | 1               | ****       | 573  |
-| [contracts/libraries/SafeTransferLib.sol](https://github.com/code-423n4/2024-04-panoptic/tree/main/contracts/libraries/SafeTransferLib.sol)       | 1               | ****       | 33   |
-| [contracts/multicall/Multicall.sol](https://github.com/code-423n4/2024-04-panoptic/tree/main/contracts/multicall/Multicall.sol)             | 1               | ****       | 18   |
-| [contracts/tokens/ERC1155Minimal.sol](https://github.com/code-423n4/2024-04-panoptic/tree/main/contracts/tokens/ERC1155Minimal.sol)           | 1               | ****       | 115  |
-| [contracts/tokens/ERC20Minimal.sol](https://github.com/code-423n4/2024-04-panoptic/tree/main/contracts/tokens/ERC20Minimal.sol)             | 1               | ****       | 52   |
-| [contracts/tokens/interfaces/IDonorNFT.sol](https://github.com/code-423n4/2024-04-panoptic/tree/main/contracts/tokens/interfaces/IDonorNFT.sol) | ****            | 1          | 4    |
-| [contracts/tokens/interfaces/IERC20Partial.sol](https://github.com/code-423n4/2024-04-panoptic/tree/main/contracts/tokens/interfaces/IERC20Partial.sol) | ****            | 1          | 6    |
-| [contracts/types/LeftRight.sol](https://github.com/code-423n4/2024-04-panoptic/tree/main/contracts/types/LeftRight.sol)                 | 1               | ****       | 156  |
-| [contracts/types/LiquidityChunk.sol](https://github.com/code-423n4/2024-04-panoptic/tree/main/contracts/types/LiquidityChunk.sol)            | 1               | ****       | 91   |
-| [contracts/types/TokenId.sol](https://github.com/code-423n4/2024-04-panoptic/tree/main/contracts/types/TokenId.sol)                   | 1               | ****       | 305  |
-| Totals                                         | 18              | 1          | 4921 |
-
+@TODO: everything in `contracts` folder except for factorynft/metadatastory
 
 ### Files out of scope
 
-|                         Contract                         |
-|:--------------------------------------------------------:|
-| deploy/DeployProtocol.s.sol                              |
-| periphery/PanopticHelper.sol                             |
-| scripts/DeployTestPool.s.sol                             |
-| scripts/tokens/ERC20S.sol                                |
-| test/foundry/core/CollateralTracker.t.sol                |
-| test/foundry/core/Misc.t.sol                             |
-| test/foundry/core/PanopticFactory.t.sol                  |
-| test/foundry/core/PanopticPool.t.sol                     |
-| test/foundry/core/SemiFungiblePositionManager.t.sol      |
-| test/foundry/libraries/CallbackLib.t.sol                 |
-| test/foundry/libraries/FeesCalc.t.sol                    |
-| test/foundry/libraries/Math.t.sol                        |
-| test/foundry/libraries/PanopticMath.t.sol                |
-| test/foundry/libraries/PositionAmountsTest.sol           |
-| test/foundry/libraries/SafeTransferLib.t.sol             |
-| test/foundry/libraries/harnesses/CallbackLibHarness.sol  |
-| test/foundry/libraries/harnesses/FeesCalcHarness.sol     |
-| test/foundry/libraries/harnesses/MathHarness.sol         |
-| test/foundry/libraries/harnesses/PanopticMathHarness.sol |
-| test/foundry/periphery/PanopticHelper.t.sol              |
-| test/foundry/testUtils/PositionUtils.sol                 |
-| test/foundry/testUtils/PriceMocks.sol                    |
-| test/foundry/testUtils/ReentrancyMocks.sol               |
-| test/foundry/tokens/ERC1155Minimal.t.sol                 |
-| test/foundry/types/LeftRight.t.sol                       |
-| test/foundry/types/LiquidityChunk.t.sol                  |
-| test/foundry/types/TokenId.t.sol                         |
-| test/foundry/types/harnesses/LeftRightHarness.sol        |
-| test/foundry/types/harnesses/LiquidityChunkHarness.sol   |
-| test/foundry/types/harnesses/TokenIdHarness.sol          |
+@TODO
 
 ## Scoping Q &amp; A
+
+- The post-diff version of the contracts (defined as the latest commit on main in 2024-09-panoptic) should not contain or introduce any High or Medium severity issues.
+
+The diff should start after the commit <https://github.com/code-423n4/2024-09-panoptic/commit/cdadf6972277cb1d26115b1dcac95850493bfa97> on the 2024-09-panoptic repo.
 
 ### General questions
 
@@ -233,11 +153,11 @@ Panoptic has been presented at conferences and was conceived with the first Pano
 | Question                                | Answer                       |
 | --------------------------------------- | ---------------------------- |
 | Test coverage                           | -                          |
-| ERC20 used by the protocol              |       any             |
-| ERC721 used  by the protocol            |            any              |
+| ERC20 used by the protocol              |       ERC4626 collateral vaults              |
+| ERC721 used  by the protocol            |            PanopticFactory NFT        |
 | ERC777 used by the protocol             |           no                |
-| ERC1155 used by the protocol            |              SFPM and factory ERC1155 tokens            |
-| Chains the protocol will be deployed on | Ethereum, Arbitrum, Avax, Base, BSC, Optimism ,Polygon |
+| ERC1155 used by the protocol            |              SFPM tokenIds            |
+| Chains the protocol will be deployed on | Ethereum |
 
 ### ERC20 token behaviors in scope
 
@@ -288,11 +208,9 @@ Panoptic:
 - Option sellers must pay back the exact amounts of tokens that were borrowed (the "shortAmounts") when their positions are burned
 - Option buyers must add back the same amount of liquidity that was borrowed when their positions are burned
 - Users should not be allowed to mint/burn options or pay premium if their end state is insolvent (at the fast oracle tick, or both ticks if the fast and slow oracle ticks are further away than the threshold)
-- Users should not be allowed to withdraw collateral if they have open positions
 - Users should not be allowed to mint more positions than the limit
 - Option sellers should not receive premium that has not settled (by collection from Uniswap or payments from long option holders) yet
 - Option sellers in a given chunk should not receive premium, as a fraction of the premium owed to them , that is greater than the ratio of total owed premium to total settled premium in that chunk
-- Liquidations must only occur if the liquidated account is insolvent at the TWAP tick and  the TWAP tick is not above the threshold for distance to the current tick
 - Note that some executable liquidations may not be profitable due to the required actions to execute the liquidation (depositing collateral, force exercises) or the price the token conversions occur at
 - Note that it is acceptable for an account to cause protocol loss (shares minted to liquidator) during a liquidation even if they have a residual token balance in their account, this may happen if the value of tokens remaining correspond to less than 1 of the other token
 - If, at the final state after a liquidation, any premium paid to sellers DURING the liquidation has not been revoked, there must not be any protocol loss (shares minted to liquidator). In other words, this means that premium cannot be paid over the protocol loss threshold.
@@ -304,9 +222,7 @@ The factory contract and usage of libraries by external integrators is relativel
 
 
 ## All trusted roles in the protocol
-
 N/A
-There is a factory owner but they do not have any permissions over the contracts in scope.
 
 
 ## Running tests
@@ -314,8 +230,8 @@ There is a factory owner but they do not have any permissions over the contracts
 ⚠️**Note**: You will need to provide your own Ethereum Mainnet eth_rpc_url (Works best with a local archives node) in the Foundry.toml.
 
 ```bash
-git clone --recurse-submodules https://github.com/code-423n4/2024-06-panoptic.git
-cd 2024-06-panoptic
+git clone --recurse-submodules https://github.com/code-423n4/2024-09-panoptic.git
+cd 2024-09-panoptic
 export FOUNDRY_PROFILE=ci_test  # (tests WILL fail without this because of a Foundry bug)
 forge build
 forge test
