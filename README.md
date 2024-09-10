@@ -145,7 +145,9 @@ Panoptic has been presented at conferences and was conceived with the first Pano
 
 - The post-diff version of the contracts (defined as the latest commit on main in 2024-09-panoptic) should not contain or introduce any High or Medium severity issues.
 
-The diff should start after the commit <https://github.com/code-423n4/2024-09-panoptic/commit/cdadf6972277cb1d26115b1dcac95850493bfa97> on the 2024-09-panoptic repo.
+- The diff should start after the commit <https://github.com/code-423n4/2024-09-panoptic/commit/cdadf6972277cb1d26115b1dcac95850493bfa97> on the 2024-09-panoptic repo.
+
+- Here is the diff: [https://github.com/code-423n4/2024-09-panoptic/compare/cdadf6972277cb1d26115b1dcac95850493bfa97...a1c0890dccf13e5ecd63a5d2555d187e82aa7ecd](https://github.com/code-423n4/2024-09-panoptic/compare/cdadf6972277cb1d26115b1dcac95850493bfa97...a1c0890dccf13e5ecd63a5d2555d187e82aa7ecd) 
 
 ### General questions
 
