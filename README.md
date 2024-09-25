@@ -1,7 +1,7 @@
 # Panoptic audit details
-- Total Prize Pool: $20,500 in USDC
-  - HM awards: $16,320 in USDC
-  - QA awards: $680 in USDC
+- Total Prize Pool: $20,000 in USDC
+  - HM awards: $15,800 in USDC
+  - QA awards: $700 in USDC
   - Judge awards: $3,000 in USDC
   - Scout awards: $500 in USDC
 - Join [C4 Discord](https://discord.gg/code4rena) to register
