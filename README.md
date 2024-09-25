@@ -146,7 +146,7 @@ Panoptic has been presented at conferences and was conceived with the first Pano
 
 - The diff should start after the commit <https://github.com/code-423n4/2024-09-panoptic/commit/cdadf6972277cb1d26115b1dcac95850493bfa97> on the 2024-09-panoptic repo.
 
-- Here is the diff: [https://github.com/code-423n4/2024-09-panoptic/compare/cdadf6972277cb1d26115b1dcac95850493bfa97...a1c0890dccf13e5ecd63a5d2555d187e82aa7ecd](https://github.com/code-423n4/2024-09-panoptic/compare/cdadf6972277cb1d26115b1dcac95850493bfa97...a1c0890dccf13e5ecd63a5d2555d187e82aa7ecd) 
+- Here is the diff: <https://github.com/code-423n4/2024-09-panoptic/compare/cdadf6972277cb1d26115b1dcac95850493bfa97...42db1404332f09c08cd2ed97001e8f93180f54e5>
 
 ### General questions
 
