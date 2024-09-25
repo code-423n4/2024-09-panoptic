@@ -1,14 +1,13 @@
 # Panoptic audit details
-- Total Prize Pool: $XX,XXX in USDC
-  - HM awards: $XX,XXX in USDC
-  - Judge awards: $X,XXX in USDC
-  - Validator awards: $X,XXX in USDC 
-  - Scout awards: $XXX in USDC
+- Total Prize Pool: $20,500 in USDC
+  - HM awards: $16,320 in USDC
+  - QA awards: $680 in USDC
+  - Judge awards: $3,000 in USDC
+  - Scout awards: $500 in USDC
 - Join [C4 Discord](https://discord.gg/code4rena) to register
-- Submit findings [using the C4 form](https://code4rena.com/contests/2024-06-panoptic/submit)
 - [Read our guidelines for more details](https://docs.code4rena.com/roles/wardens)
-- Starts Sept XX, 2024 20:00 UTC
-- Ends Sept XX, 2024 20:00 UTC
+- Starts September 26, 2024 20:00 UTC
+- Ends October 3, 2024 20:00 UTC
 
 ## Automated Findings / Publicly Known Issues
 
