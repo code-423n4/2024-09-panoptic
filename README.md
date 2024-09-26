@@ -11,7 +11,7 @@
 
 ## Automated Findings / Publicly Known Issues
 
-The 4naly3er report can be found @TODO: ~~[here](https://github.com/code-423n4/2024-09-panoptic/blob/main/4naly3er-report.md).~~
+The 4naly3er report can be found [here](https://github.com/code-423n4/2024-09-panoptic/blob/main/4naly3er-report.md).
 
 
 
@@ -134,11 +134,37 @@ Panoptic has been presented at conferences and was conceived with the first Pano
 
 ### Files in scope
 
-@TODO: everything in `contracts` folder except for factorynft/metadatastory
+|File                                                      |   blank       | comment     |      code|
+|----------------------------------------------------------|---------------|-------------|----------|
+|contracts/PanopticPool.sol                                |     230       |     558     |      1168|
+|contracts/CollateralTracker.sol                           |     204       |     613     |       787|
+|contracts/libraries/PanopticMath.sol                      |      99       |     321     |       690|
+|contracts/SemiFungiblePositionManager.sol                 |     177       |     573     |       637|
+|contracts/libraries/Math.sol                              |     107       |     316     |       476|
+|contracts/types/TokenId.sol                               |      53       |     242     |       305|
+|contracts/base/FactoryNFT.sol                             |      23       |      58     |       249|
+|contracts/PanopticFactory.sol                             |      54       |     132     |       216|
+|contracts/types/LeftRight.sol                             |      44       |     101     |       156|
+|contracts/tokens/ERC1155Minimal.sol                       |      37       |      89     |       115|
+|contracts/types/PositionBalance.sol                       |      18       |      85     |       112|
+|contracts/types/LiquidityChunk.sol                        |      15       |      88     |        91|
+|contracts/libraries/InteractionHelper.sol                 |       7       |      33     |        57|
+|contracts/tokens/ERC20Minimal.sol                         |      30       |      65     |        52|
+|contracts/libraries/FeesCalc.sol                          |       7       |     106     |        44|
+|contracts/types/Pointer.sol                               |      12       |      26     |        39|
+|contracts/libraries/SafeTransferLib.sol                   |      12       |      32     |        33|
+|contracts/libraries/Errors.sol                            |      29       |      38     |        32|
+|contracts/libraries/CallbackLib.sol                       |       4       |      13     |        22|
+|contracts/base/Multicall.sol                              |       4       |      15     |        18|
+|contracts/base/MetadataStore.sol                          |       3       |      15     |        16|
+|contracts/libraries/Constants.sol                         |      11       |      22     |        15|
+|contracts/tokens/interfaces/IERC20Partial.sol             |       3       |      19     |         6|
+|SUM:                                                      |    1183       |    3560     |      5336|
 
 ### Files out of scope
 
-@TODO
+Files under `factorynft/metadatastory`
+Everything else
 
 ## Scoping Q &amp; A
 
@@ -153,7 +179,7 @@ Panoptic has been presented at conferences and was conceived with the first Pano
 
 | Question                                | Answer                       |
 | --------------------------------------- | ---------------------------- |
-| Test coverage                           | -                          |
+| Test coverage                           | 84%                          |
 | ERC20 used by the protocol              |       ERC4626 collateral vaults              |
 | ERC721 used  by the protocol            |            PanopticFactory NFT        |
 | ERC777 used by the protocol             |           no                |
@@ -228,7 +254,7 @@ N/A
 
 ## Running tests
 
-⚠️**Note**: You will need to provide your own Ethereum Mainnet eth_rpc_url (Works best with a local archives node) in the Foundry.toml.
+⚠️ **Note**: You will need to provide your own Ethereum Mainnet eth_rpc_url (Works best with a local archives node) in the Foundry.toml.
 
 ```bash
 git clone --recurse-submodules https://github.com/code-423n4/2024-09-panoptic.git
