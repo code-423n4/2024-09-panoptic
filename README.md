@@ -163,8 +163,6 @@ Panoptic has been presented at conferences and was conceived with the first Pano
 
 ### Files out of scope
 
-Files under `factorynft/metadatastory`
-
 Everything else
 
 ## Scoping Q &amp; A
@@ -174,6 +172,8 @@ Everything else
 - The diff should start after the commit <https://github.com/code-423n4/2024-09-panoptic/commit/cdadf6972277cb1d26115b1dcac95850493bfa97> on the 2024-09-panoptic repo.
 
 - Here is the diff: <https://github.com/code-423n4/2024-09-panoptic/compare/cdadf6972277cb1d26115b1dcac95850493bfa97...42db1404332f09c08cd2ed97001e8f93180f54e5>
+
+- These three contracts are only partially in scope: FactoryNFT.sol (inherited by `PanopticFactory`), MetadataStore.sol (inherited by `PanopticFactory`) and Pointer.sol (a library). NONE of the functionality in these contracts or the factory's NFT/ERC721 implementation/issuance is in scope. However, the contracts themselves must technically be included in the scope because of their usage in the core contracts, so issues involving any core `PanopticFactory` functionality being compromised due to the introduction of those contracts are valid.
 
 ### General questions
 
@@ -246,7 +246,7 @@ Panoptic:
 
 
 ## Attack ideas (where to focus for bugs)
-The factory contract and usage of libraries by external integrators is relatively unimportant -- wardens should focus their efforts on the security of the SFPM (previously audited by C4, code has changed since that audit however), PanopticPool, and CollateralTracker
+The factory contract and usage of libraries by external integrators is relatively unimportant -- wardens should focus their efforts on the security of the SFPM, PanopticPool, and CollateralTracker
 
 
 ## All trusted roles in the protocol
