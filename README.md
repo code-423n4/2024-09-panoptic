@@ -164,6 +164,7 @@ Panoptic has been presented at conferences and was conceived with the first Pano
 ### Files out of scope
 
 Files under `factorynft/metadatastory`
+
 Everything else
 
 ## Scoping Q &amp; A
